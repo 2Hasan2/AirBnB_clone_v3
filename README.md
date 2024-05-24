@@ -7,6 +7,8 @@ This is the third version of the AirBnB clone project, which is a simple copy of
 The API has the following endpoints:
 
 ### Status
+- `GET /status`: Retrieves the status of the API.
+- `GET /stats`: Retrieves the number of each object in the database.
 
 ### Users
 
