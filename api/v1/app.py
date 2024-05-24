@@ -12,17 +12,16 @@ app.register_blueprint(app_views)
 cors = CORS(app, resources={r"/*": {"origins": "0.0.0.0"}})
 
 
-
 @app.teardown_appcontext
 def close_db(error):
     """ Close Storage """
     storage.close()
 
+
 @app.errorhandler(404)
 def not_found(error):
     """ Error 404 """
     return make_response(jsonify({'error': "Not found"}), 404)
-
 
 
 if __name__ == "__main__":
