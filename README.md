@@ -18,6 +18,11 @@ The API has the following endpoints:
 
 
 ### Cities
+- `GET /states/<state_id>/cities`: Retrieves all cities in a specific state.
+- `GET /cities/<city_id>`: Retrieves a specific city.
+- `DELETE /cities/<city_id>`: Deletes a specific city.
+- `POST /cities`: Creates a new city.
+- `PUT /cities/<city_id>`: Updates a specific city.
 
 
 ### States
