@@ -9,6 +9,7 @@ The API has the following endpoints:
 ### Status
 - `GET /status`: Retrieves the status of the API.
 - `GET /stats`: Retrieves the number of each object in the database.
+- `GET /stats/<object>`: Retrieves the number of a specific object in the database.
 
 ### Users
 
@@ -20,6 +21,11 @@ The API has the following endpoints:
 
 
 ### States
+- `GET /states`: Retrieves all states.
+- `GET /states/<state_id>`: Retrieves a specific state.
+- `DELETE /states/<state_id>`: Deletes a specific state.
+- `POST /states`: Creates a new state.
+- `PUT /states/<state_id>`: Updates a specific state.
 
 
 ### Amenities

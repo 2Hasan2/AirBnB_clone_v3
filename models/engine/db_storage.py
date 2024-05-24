@@ -21,7 +21,7 @@ classes = {"Amenity": Amenity, "City": City,
 
 
 class DBStorage:
-    """interaacts with the MySQL database"""
+    """interacts with the MySQL database"""
     __engine = None
     __session = None
 
@@ -32,14 +32,9 @@ class DBStorage:
         HBNB_MYSQL_HOST = getenv('HBNB_MYSQL_HOST')
         HBNB_MYSQL_DB = getenv('HBNB_MYSQL_DB')
         HBNB_ENV = getenv('HBNB_ENV')
-        print(HBNB_MYSQL_USER + HBNB_MYSQL_PWD + HBNB_MYSQL_HOST + HBNB_MYSQL_DB)
-        self.__engine = create_engine("mysql+mysqldb://{}:{}@{}/{}".
-                                    format(
-                                        getenv("HBNB_MYSQL_USER"),
-                                        getenv("HBNB_MYSQL_PWD"),
-                                        getenv("HBNB_MYSQL_HOST"),
-                                        getenv("HBNB_MYSQL_DB")),
-                                    pool_pre_ping=True)
+
+        self.__engine = create_engine(f'mysql+mysqldb://{HBNB_MYSQL_USER}:{HBNB_MYSQL_PWD}@{HBNB_MYSQL_HOST}/{HBNB_MYSQL_DB}', pool_pre_ping=True)
+
         if HBNB_ENV == "test":
             Base.metadata.drop_all(self.__engine)
 
