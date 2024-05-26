@@ -2,7 +2,7 @@
 """ Flask Application """
 from api.v1.views import app_views
 from models import storage
-from flask import Flask, abort, make_response, jsonify, request
+from flask import Flask, make_response, jsonify
 from os import environ
 from flask_cors import CORS
 
