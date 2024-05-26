@@ -5,8 +5,6 @@ from models.state import State
 from models import storage
 from api.v1.views import app_views
 from flask import abort, jsonify, request
-from datetime import datetime
-import uuid
 
 
 @app_views.route(

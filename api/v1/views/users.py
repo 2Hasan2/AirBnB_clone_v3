@@ -4,8 +4,6 @@ from api.v1.views import app_views
 from flask import jsonify, abort, request
 from models import storage
 from models.user import User
-from datetime import datetime
-import uuid
 
 
 @app_views.route('/users', methods=['GET'], strict_slashes=False)
