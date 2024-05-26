@@ -12,7 +12,8 @@ def users():
     users = storage.all(User)
     data = []
     for user in users.values():
-        data.append(user.to_dict())
+        user = user.to_dict()
+        data.append(user)
     return jsonify(data)
 
 
@@ -45,13 +46,13 @@ def delete_user(user_id):
         methods=['POST'], strict_slashes=False)
 def post_user():
     """Creates a User"""
-    if not request.get_json():
-        abort(400, description="Not a JSON")
-    if 'email' not in request.get_json():
-        abort(400, description="Missing email")
-    if 'password' not in request.get_json():
-        abort(400, description="Missing password")
     data = request.get_json()
+    if not data:
+        abort(400, description="Not a JSON")
+    if 'email' not in data:
+        abort(400, description="Missing email")
+    if 'password' not in data:
+        abort(400, description="Missing password")
     instance = User(**data)
     instance.save()
     return jsonify(instance.to_dict()), 201
