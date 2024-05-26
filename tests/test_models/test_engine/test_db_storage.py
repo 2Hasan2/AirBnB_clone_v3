@@ -19,8 +19,11 @@ import os
 import pep8
 import unittest
 DBStorage = db_storage.DBStorage
-classes = {"Amenity": Amenity, "City": City, "Place": Place,
-           "Review": Review, "State": State, "User": User}
+classes = {
+    "Amenity": Amenity, "City": City,
+    "Place": Place, "Review": Review,
+    "State": State, "User": User
+}
 
 
 class TestDBStorageDocs(unittest.TestCase):
@@ -34,21 +37,27 @@ class TestDBStorageDocs(unittest.TestCase):
         """Test that models/engine/db_storage.py conforms to PEP8."""
         pep8s = pep8.StyleGuide(quiet=True)
         result = pep8s.check_files(['models/engine/db_storage.py'])
-        self.assertEqual(result.total_errors, 0,
-                         "Found code style errors (and warnings).")
+        self.assertEqual(
+            result.total_errors, 0,
+            "Found code style errors (and warnings)."
+            )
 
     def test_pep8_conformance_test_db_storage(self):
         """Test tests/test_models/test_db_storage.py conforms to PEP8."""
         pep8s = pep8.StyleGuide(quiet=True)
         result = pep8s.check_files(['tests/test_models/test_engine/\
 test_db_storage.py'])
-        self.assertEqual(result.total_errors, 0,
-                         "Found code style errors (and warnings).")
+        self.assertEqual(
+            result.total_errors, 0,
+            "Found code style errors (and warnings)."
+            )
 
     def test_db_storage_module_docstring(self):
         """Test for the db_storage.py module docstring"""
-        self.assertIsNot(db_storage.__doc__, None,
-                         "db_storage.py needs a docstring")
+        self.assertIsNot(
+            db_storage.__doc__, None,
+            "db_storage.py needs a docstring"
+            )
         self.assertTrue(len(db_storage.__doc__) >= 1,
                         "db_storage.py needs a docstring")
 
@@ -75,18 +84,3 @@ class TestFileStorage(unittest.TestCase):
         if models.storage_t != 'db':
             return
         self.assertIs(type(models.storage.all()), dict)
-
-    def test_all_no_class(self):
-        if models.storage_t != 'db':
-            return
-        """Test that all returns all rows when no class is passed"""
-
-    def test_new(self):
-        """test that new adds an object to the database"""
-        if models.storage_t != 'db':
-            return
-
-    def test_save(self):
-        """Test that save properly saves objects to file.json"""
-        if models.storage_t != 'db':
-            return
