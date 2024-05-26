@@ -28,5 +28,7 @@ if __name__ == "__main__":
     """ Main Function """
     HOST = environ.get('HBNB_API_HOST', '0.0.0.0')
     PORT = int(environ.get('HBNB_API_PORT', 5000))
-    DEBUG = environ.get('HBNB_API_ENV', 'False').lower() in ['true', '1', 't', 'y', 'yes']
+    DEBUG = environ.get('HBNB_API_ENV', 'False').lower() in [
+        'true', '1', 't', 'y', 'yes'
+    ]
     app.run(host=HOST, port=PORT, threaded=True, debug=DEBUG)
