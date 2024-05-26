@@ -1,5 +1,7 @@
-__pycache__/
+**/__pycache__/
 env/
 file.json
 test/
 ./test_*.py
+old_py/
+.vscode
