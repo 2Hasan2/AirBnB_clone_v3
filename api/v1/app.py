@@ -23,11 +23,6 @@ def not_found(error):
     """ Error 404 """
     return make_response(jsonify({'error': "Not found"}), 404)
 
-@app.before_request
-def check_content_type():
-    """ Check Content Type """
-    if request.content_type and request.content_type != 'application/json':
-        abort(400, description="Content-Type must be application/json")
 
 if __name__ == "__main__":
     """ Main Function """
