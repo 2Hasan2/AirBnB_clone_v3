@@ -18,13 +18,14 @@ def all_states():
     return jsonify(state_dict)
 
 
-# @app_views.route('/states/<int:state_id>', methods=['GET'], strict_slashes=False)
-# def certain_state():
-#     """returns Hello HBNB!"""
-#     state_list = (storage.all(State))
-#     df = pd.DataFrame(state_list)
-#     state_dict = df.to_dict()
-#     return jsonify(state_dict)
+@app_views.route('/states/<str:state_id>', methods=['GET'], strict_slashes=False)
+def fetch_state(state_id):
+    """returns Hello HBNB!"""
+    result_list = (storage.all(State))
+    for state in result_list.values().to_dict():
+        if (state_id == state.get(id)):
+            return (jsonify())
+    return jsonify(state_dict)
 
 
 if __name__ == '__main__':
