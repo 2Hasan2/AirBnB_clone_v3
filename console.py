@@ -13,8 +13,12 @@ from models.state import State
 from models.user import User
 import shlex  # for splitting the line along spaces except in double quotes
 
-classes = {"Amenity": Amenity, "BaseModel": BaseModel, "City": City,
-            "Place": Place, "Review": Review, "State": State, "User": User}
+classes = {
+    "Amenity": Amenity, "BaseModel": BaseModel,
+    "City": City, "Place": Place,
+    "Review": Review, "State": State,
+    "User": User
+}
 
 
 class HBNBCommand(cmd.Cmd):
@@ -46,10 +50,10 @@ class HBNBCommand(cmd.Cmd):
                 else:
                     try:
                         value = int(value)
-                    except:
+                    except ValueError:
                         try:
                             value = float(value)
-                        except:
+                        except ValueError:
                             continue
                 new_dict[key] = value
         return new_dict
@@ -140,12 +144,12 @@ class HBNBCommand(cmd.Cmd):
                                 if args[2] in integers:
                                     try:
                                         args[3] = int(args[3])
-                                    except:
+                                    except ValueError:
                                         args[3] = 0
                                 elif args[2] in floats:
                                     try:
                                         args[3] = float(args[3])
-                                    except:
+                                    except ValueError:
                                         args[3] = 0.0
                             setattr(models.storage.all()[k], args[2], args[3])
                             models.storage.all()[k].save()
@@ -159,6 +163,7 @@ class HBNBCommand(cmd.Cmd):
                 print("** instance id missing **")
         else:
             print("** class doesn't exist **")
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()

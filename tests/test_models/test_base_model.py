@@ -86,10 +86,12 @@ class TestBaseModel(unittest.TestCase):
             uuid = inst.id
             with self.subTest(uuid=uuid):
                 self.assertIs(type(uuid), str)
-                self.assertRegex(uuid,
-                                '^[0-9a-f]{8}-[0-9a-f]{4}'
-                                '-[0-9a-f]{4}-[0-9a-f]{4}'
-                                '-[0-9a-f]{12}$')
+                self.assertRegex(
+                    uuid,
+                    '^[0-9a-f]{8}-[0-9a-f]{4}'
+                    '-[0-9a-f]{4}-[0-9a-f]{4}'
+                    '-[0-9a-f]{12}$'
+                    )
         self.assertNotEqual(inst1.id, inst2.id)
 
     def test_to_dict(self):
@@ -98,12 +100,14 @@ class TestBaseModel(unittest.TestCase):
         my_model.name = "Holberton"
         my_model.my_number = 89
         d = my_model.to_dict()
-        expected_attrs = ["id",
-                        "created_at",
-                        "updated_at",
-                        "name",
-                        "my_number",
-                        "__class__"]
+        expected_attrs = [
+            "id",
+            "created_at",
+            "updated_at",
+            "name",
+            "my_number",
+            "__class__"
+        ]
         self.assertCountEqual(d.keys(), expected_attrs)
         self.assertEqual(d['__class__'], 'BaseModel')
         self.assertEqual(d['name'], "Holberton")
