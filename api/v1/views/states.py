@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" Blueprint for API """
+""" State API """
 from models.state import State
 from models import storage
 from api.v1.views import app_views
