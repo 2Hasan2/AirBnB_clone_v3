@@ -3,7 +3,7 @@
 API Module
 """
 
-from flask import Flask, render_template
+from flask import Flask, render_template, abort, make_response, jsonify
 from models import *
 from models import storage
 from api.v1.views import app_views
@@ -11,13 +11,11 @@ app = Flask(__name__)
 app.register_blueprint(app_views)
 
 
-@app.route('/hbnb_filters', strict_slashes=False)
-def filters():
-    """display a HTML page like 6-index.html from static"""
-    states = storage.all("State").values()
-    amenities = storage.all("Amenity").values()
-    return render_template('10-hbnb_filters.html', states=states,
-                           amenities=amenities)
+@app.errorhandler(404)
+def not_found(error):
+    """Handling 404 Not Found error"""
+    not_found = {"error": "Not Found"}
+    return make_response(jsonify(not_found), 404)
 
 
 @app.teardown_appcontext
@@ -27,4 +25,4 @@ def teardown_db(exception):
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port='5000', threaded=True)
+    app.run(host='0.0.0.0', port='5000', threaded=True, debug=True)
