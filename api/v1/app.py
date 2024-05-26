@@ -3,7 +3,7 @@
 from api.v1.views import app_views
 from models import storage
 from flask import Flask, make_response, jsonify
-from os import environ
+from os import getenv
 from flask_cors import CORS
 
 
@@ -26,9 +26,8 @@ def not_found(error):
 
 if __name__ == "__main__":
     """ Main Function """
-    HOST = environ.get('HBNB_API_HOST', '0.0.0.0')
-    PORT = int(environ.get('HBNB_API_PORT', 5000))
-    DEBUG = environ.get('HBNB_API_ENV', 'False').lower() in [
-        'true', '1', 't', 'y', 'yes'
-    ]
-    app.run(host=HOST, port=PORT, threaded=True)
+    HOST = getenv('HBNB_API_HOST') or '0.0.0.0'
+    PORT = getenv('HBNB_API_PORT') or 5000
+    DEBUG = getenv('HBNB_API_ENV') == 'development' or False
+
+    app.run(host=HOST, port=PORT, debug=DEBUG, threaded=True)
