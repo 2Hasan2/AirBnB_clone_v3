@@ -1,8 +1,11 @@
 #!/usr/bin/python3
 from models.city import City
+from models.state import State
 from models import storage
 from api.v1.views import app_views
-from flask import abort, jsonify, make_response, request
+from flask import abort, jsonify, request
+from datetime import datetime
+import uuid
 
 
 @app_views.route(
@@ -10,8 +13,14 @@ from flask import abort, jsonify, make_response, request
         strict_slashes=False)
 def cities(state_id):
     """Status of API"""
+    state = storage.get(State, state_id)
+    if not state:
+        abort(404)
     cities = storage.all(City)
-    cities = [city.to_dict() for city in cities.values()]
+    cities = [
+        city.to_dict() for city in cities.values()
+        if city.state_id == state_id
+    ]
     return jsonify(cities)
 
 
@@ -22,7 +31,7 @@ def city_id(city_id):
     """Retrieves the number of each objects by type"""
     city = storage.get(City, city_id)
     if not city:
-        return jsonify({'error': 'Not found'}), 404
+        return abort(404)
     return jsonify(city.to_dict())
 
 
@@ -32,6 +41,8 @@ def city_id(city_id):
 def delete_city(city_id):
     """Delete city"""
     city = storage.get(City, city_id)
+    if not city:
+        abort(404)
     storage.delete(city)
     storage.save()
     return jsonify({}), 200
@@ -42,13 +53,15 @@ def delete_city(city_id):
         strict_slashes=False)
 def post_city(state_id):
     """Create a new city"""
-    if not request.get_json():
-        abort(400, description="Not a JSON")
+    data = request.get_json()
 
-    if 'name' not in request.get_json():
+    if not storage.get(State, state_id):
+        abort(404)
+    if not data:
+        abort(400, description="Not a JSON")
+    if 'name' not in data:
         abort(400, description="Missing name")
 
-    data = request.get_json()
     instance = City(**data)
     instance.save()
     return jsonify(instance.to_dict()), 201
@@ -60,17 +73,16 @@ def post_city(state_id):
 def put_city(city_id):
     """Update a city"""
     city = storage.get(City, city_id)
+    data = request.get_json()
 
     if not city:
-        abort(404, description="Not found")
+        abort(404)
 
-    if not request.get_json():
+    if not data:
         abort(400, description="Not a JSON")
 
-    data = request.get_json()
     for key, value in data.items():
-        setattr(city, key, value)
-
+        if key not in ['id', 'created_at', 'updated_at']:
+            setattr(city, key, value)
     city.save()
-
     return jsonify(city.to_dict()), 200
