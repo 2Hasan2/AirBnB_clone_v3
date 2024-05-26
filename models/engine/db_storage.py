@@ -17,11 +17,11 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 
 classes = {"Amenity": Amenity, "City": City,
-            "Place": Place, "Review": Review, "State": State, "User": User}
+           "Place": Place, "Review": Review, "State": State, "User": User}
 
 
 class DBStorage:
-    """interacts with the MySQL database"""
+    """interaacts with the MySQL database"""
     __engine = None
     __session = None
 
@@ -32,9 +32,11 @@ class DBStorage:
         HBNB_MYSQL_HOST = getenv('HBNB_MYSQL_HOST')
         HBNB_MYSQL_DB = getenv('HBNB_MYSQL_DB')
         HBNB_ENV = getenv('HBNB_ENV')
-
-        self.__engine = create_engine(f'mysql+mysqldb://{HBNB_MYSQL_USER}:{HBNB_MYSQL_PWD}@{HBNB_MYSQL_HOST}/{HBNB_MYSQL_DB}', pool_pre_ping=True)
-
+        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.
+                                      format(HBNB_MYSQL_USER,
+                                             HBNB_MYSQL_PWD,
+                                             HBNB_MYSQL_HOST,
+                                             HBNB_MYSQL_DB))
         if HBNB_ENV == "test":
             Base.metadata.drop_all(self.__engine)
 
@@ -72,16 +74,3 @@ class DBStorage:
     def close(self):
         """call remove() method on the private session attribute"""
         self.__session.remove()
-
-    def get(self, cls, id):
-        """retrieve one object"""
-        if cls and  id:
-            key = cls.__name__ + '.' + id
-            return self.__session.get(cls, id)
-        return None
-    
-    def count(self, cls=None):
-        """count the number of objects in storage"""
-        if cls:
-            return len(self.all(cls))
-        return len(self.all())
