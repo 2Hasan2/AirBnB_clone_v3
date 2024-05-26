@@ -83,17 +83,19 @@ test_file_storage.py'])
 
 class TestFileStorage(unittest.TestCase):
     """Test the FileStorage class"""
-    @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
     def test_all_returns_dict(self):
         """Test that all returns the FileStorage.__objects attr"""
+        if models.storage_t == 'db':
+            return
         storage = FileStorage()
         new_dict = storage.all()
         self.assertEqual(type(new_dict), dict)
         self.assertIs(new_dict, storage._FileStorage__objects)
 
-    @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
     def test_new(self):
         """test that new adds an object to the FileStorage.__objects attr"""
+        if models.storage_t == 'db':
+            return
         storage = FileStorage()
         save = FileStorage._FileStorage__objects
         FileStorage._FileStorage__objects = {}
@@ -107,9 +109,10 @@ class TestFileStorage(unittest.TestCase):
                 self.assertEqual(test_dict, storage._FileStorage__objects)
         FileStorage._FileStorage__objects = save
 
-    @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
     def test_save(self):
         """Test that save properly saves objects to file.json"""
+        if models.storage_t == 'db':
+            return
         storage = FileStorage()
         new_dict = {}
         for key, value in classes.items():
@@ -126,3 +129,75 @@ class TestFileStorage(unittest.TestCase):
         with open("file.json", "r") as f:
             js = f.read()
         self.assertEqual(json.loads(string), json.loads(js))
+
+    def test_reload(self):
+        """Test that reload properly loads objects from file.json"""
+        if models.storage_t == 'db':
+            return
+        storage = FileStorage()
+        new_dict = {}
+        for key, value in classes.items():
+            instance = value()
+            instance_key = instance.__class__.__name__ + "." + instance.id
+            new_dict[instance_key] = instance
+        save = FileStorage._FileStorage__objects
+        FileStorage._FileStorage__objects = new_dict
+        storage.save()
+        storage.reload()
+        FileStorage._FileStorage__objects = {}
+        storage.reload()
+        for key, value in new_dict.items():
+            storage.new(value)
+        storage.save()
+        with open("file.json", "r") as f:
+            js = f.read()
+        self.assertEqual(json.loads(json.dumps(new_dict)),
+                         json.loads(js))
+        FileStorage._FileStorage__objects = save
+
+    def test_delete(self):
+        """Test that delete properly deletes objects from __objects"""
+        if models.storage_t == 'db':
+            return
+        storage = FileStorage()
+        new_dict = {}
+        for key, value in classes.items():
+            instance = value()
+            instance_key = instance.__class__.__name__ + "." + instance.id
+            new_dict[instance_key] = instance
+        save = FileStorage._FileStorage__objects
+        FileStorage._FileStorage__objects = new_dict
+        storage.delete(list(new_dict.values())[0])
+        self.assertNotIn(list(new_dict.keys())[0],
+                         storage._FileStorage__objects)
+        FileStorage._FileStorage__objects = save
+
+    def test_get(self):
+        '''
+            Test if get method retrieves obj requested
+        '''
+        if models.storage_t == 'db':
+            return
+        storage = FileStorage()
+        new_state = State(name="NewYork")
+        storage.new(new_state)
+        key = "State.{}".format(new_state.id)
+        result = storage.get("State", new_state.id)
+        self.assertTrue(result.id, new_state.id)
+        self.assertIsInstance(result, State)
+
+    def test_count(self):
+        '''
+            Test if count method returns expected number of objects
+        '''
+        if models.storage_t == 'db':
+            return
+        storage = FileStorage()
+        old_count = storage.count("State")
+        new_state1 = State(name="NewYork")
+        storage.new(new_state1)
+        new_state2 = State(name="Virginia")
+        storage.new(new_state2)
+        new_state3 = State(name="California")
+        storage.new(new_state3)
+        self.assertEqual(old_count + 3, storage.count("State"))
