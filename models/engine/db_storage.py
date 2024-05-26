@@ -95,7 +95,7 @@ class DBStorage:
         if cls is not None:
             for value in classes.values():
                 if (value == cls):
-                    self.__session.query(cls).count()
+                    num = self.__session.query(cls).count()
         else:
             for value in classes.values():
                 resultObjects = self.__session.query(value).all()
