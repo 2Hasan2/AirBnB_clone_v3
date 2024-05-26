@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+""" City objects that handles all default RestFul API actions """
 from models.city import City
 from models.state import State
 from models import storage
