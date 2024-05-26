@@ -93,11 +93,9 @@ class DBStorage:
         """Method to count all object in a class, or count all objects"""
         num = 0
         if cls is not None:
-            for key, value in classes.items():
+            for value in classes.values():
                 if (value == cls):
-                    resultObjects = self.__session.query(value).all()
-                    for obj in resultObjects:
-                        num += 1
+                    self.__session.query(cls).count()
         else:
             for value in classes.values():
                 resultObjects = self.__session.query(value).all()
