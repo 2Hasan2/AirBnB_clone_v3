@@ -31,4 +31,4 @@ if __name__ == "__main__":
     DEBUG = environ.get('HBNB_API_ENV', 'False').lower() in [
         'true', '1', 't', 'y', 'yes'
     ]
-    app.run(host=HOST, port=PORT, threaded=True, debug=DEBUG)
+    app.run(host=HOST, port=PORT, threaded=True)
