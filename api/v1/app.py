@@ -24,15 +24,9 @@ def not_found(error):
     return make_response(jsonify({'error': "Not found"}), 404)
 
 
-# @app.before_request
-# def before_request():
-#     """ Before Request """
-#     if request.content_type != 'application/json':
-#         abort(400, 'Content-Type is not application/json')
-
-
 if __name__ == "__main__":
     """ Main Function """
-    PORT = environ.get('HBNB_API_PORT') or '0.0.0.0'
-    HOST = environ.get('HBNB_API_HOST') or 5000
-    app.run(host=HOST, port=PORT, threaded=True, debug=True)
+    HOST = environ.get('HBNB_API_HOST', '0.0.0.0')
+    PORT = int(environ.get('HBNB_API_PORT', 5000))
+    DEBUG = environ.get('HBNB_API_ENV', 'False').lower() in ['true', '1', 't', 'y', 'yes']
+    app.run(host=HOST, port=PORT, threaded=True, debug=DEBUG)
