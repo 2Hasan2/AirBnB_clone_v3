@@ -38,12 +38,10 @@ def del_state(state_id):
     if not state_id:
         abort(404)
     else:
-        state_dict = {}
-        for state in state_dict:
-            if (state_id == state.get('id')):
-                storage.delete(state_id)
-                return (jsonify({}))
-    abort(404)
+        state_delete = storage.get(State, state_id)
+        storage.delete(state_delete)
+        storage.save()
+        return (jsonify({}))
 
 
 @app_views.route('/states/', methods=['POST'], strict_slashes=False)
@@ -65,6 +63,25 @@ def create_state():
         return "Not a JSON", 400
 
     return make_response(jsonify(state.to_dict()), 201)
+
+
+@app_views.route('/states/<string:state_id>', methods=['PUT'], strict_slashes=False)
+def edit_state(state_id):
+    """Returs JSON representation of state with given ID"""
+    list_keys = ["id", "created_at", "updated_at"]
+
+    try:
+        kwargs = request.get_json()
+        state_old = storage.get(State, state_id)
+
+        for key, value in kwargs.items():
+            if key not in list_keys:
+                setattr(state_old, key, value)
+
+        state_old.save()
+        return jsonify(state_old.to_dict()), 200
+    except ValueError:
+        return "Not a JSON", 400
 
 
 if __name__ == '__main__':
