@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """ this contains the views for amenities """
 from api.v1.views import app_views
-from flask import jsonify, abort, request
+from flask import jsonify, abort, request, make_response
 from models import storage
 from models.amenity import Amenity
 
@@ -50,7 +50,7 @@ def post_amenity():
     instance = Amenity(**data)
     storage.new(instance)
     instance.save()
-    return jsonify(instance.to_dict()), 201
+    return make_response(jsonify(instance.to_dict()), 201)
 
 
 @app_views.route(
