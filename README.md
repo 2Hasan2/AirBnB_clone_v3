@@ -8,8 +8,8 @@ The API has the following endpoints:
 
 ### Status
 - `GET /status`: Retrieves the status of the API.
-- `GET /stats`: Retrieves the number of each object in the database.
-- `GET /stats/<object>`: Retrieves the number of a specific object in the database.
+- `GET /status`: Retrieves the number of each object in the database.
+- `GET /status/<object>`: Retrieves the number of a specific object in the database.
 
 ### Users
 
