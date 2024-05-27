@@ -12,7 +12,7 @@ from models.city import *
 @app_views.route('/states/<string:state_id>/cities', methods=['GET'], strict_slashes=False)
 def all_cities(state_id):
     """Returns list of Cities in a JSON representation"""
-    if storage.get(State, state_id is None):
+    if storage.get(State, state_id) is None:
         abort(404)
 
     cities = [city.to_dict() for city in storage.get(State, state_id).cities]
@@ -48,7 +48,7 @@ def del_city(city_id):
 @app_views.route('/states/<string:state_id>/cities', methods=['POST'], strict_slashes=False)
 def create_city(state_id):
     """Returs JSON representation of state with given ID"""
-    if storage.get(State, state_id is None):
+    if storage.get(State, state_id) is None:
         abort(404)
 
     try:
@@ -73,7 +73,6 @@ def edit_city(city_id):
     try:
         kwargs = request.get_json()
         city_old = storage.get(City, city_id)
-        return jsonify(city_old.to_dict())
 
         for key, value in kwargs.items():
             if key not in list_keys:

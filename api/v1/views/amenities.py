@@ -35,7 +35,7 @@ def fetch_amenity(amenity_id):
 @app_views.route('/amenities/<string:amenity_id>', methods=['DELETE'], strict_slashes=False)
 def del_amenity(amenity_id):
     """Returs JSON representation of amenity with given ID"""
-    if not amenity_id:
+    if storage.get(Amenity, amenity_id) is None or not amenity_id:
         abort(404)
     else:
         amenity_delete = storage.get(Amenity, amenity_id)
