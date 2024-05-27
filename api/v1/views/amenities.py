@@ -1,21 +1,16 @@
 #!/usr/bin/python3
-"""amenities"""
+""" this contains the views for amenities """
 from api.v1.views import app_views
 from flask import jsonify, abort, request
 from models import storage
 from models.amenity import Amenity
-from datetime import datetime
-import uuid
 
 
 @app_views.route('/amenities', methods=['GET'], strict_slashes=False)
 def amenities():
     """Retrieves the list of all Amenity objects"""
-    amenities = storage.all(Amenity)
-    data = []
-    for amenity in amenities.values():
-        data.append(amenity.to_dict())
-    return jsonify(data)
+    amenities = storage.all(Amenity).values()
+    return jsonify([amenity.to_dict() for amenity in amenities])
 
 
 @app_views.route(
@@ -37,9 +32,9 @@ def delete_amenity(amenity_id):
     amenity = storage.get(Amenity, amenity_id)
     if not amenity:
         abort(404)
-    storage.delete(amenity)
+    amenity.delete()
     storage.save()
-    return jsonify({}), 200
+    return jsonify({})
 
 
 @app_views.route(
@@ -54,7 +49,7 @@ def post_amenity():
     data = request.get_json()
     instance = Amenity(**data)
     instance.save()
-    return jsonify(instance.to_dict()), 201
+    return jsonify(instance.to_dict())
 
 
 @app_views.route(
@@ -72,4 +67,4 @@ def put_amenity(amenity_id):
         if key not in ['id', 'created_at', 'updated_at']:
             setattr(amenity, key, value)
     amenity.save()
-    return jsonify(amenity.to_dict()), 200
+    return jsonify(amenity.to_dict())
