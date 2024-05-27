@@ -42,10 +42,10 @@ def delete_state(state_id):
 def post_state():
     """Create a new state"""
     if not request.get_json():
-        abort(400, description="Not a JSON")
+        abort(400, "Not a JSON")
 
     if 'name' not in request.get_json():
-        abort(400, description="Missing name")
+        abort(400, "Missing name")
 
     data = request.get_json()
     instance = State(**data)
@@ -63,7 +63,7 @@ def put_state(state_id):
         abort(404)
 
     if not request.get_json():
-        abort(400, description="Not a JSON")
+        abort(400, "Not a JSON")
 
     for key, value in data.items():
         if key not in ['id', 'created_at', 'updated_at']:

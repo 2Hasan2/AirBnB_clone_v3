@@ -56,11 +56,11 @@ def post_place(city_id):
     if not city:
         abort(404)
     if not request.get_json():
-        abort(400, description="Not a JSON")
+        abort(400, "Not a JSON")
     if 'user_id' not in request.get_json():
-        abort(400, description="Missing user_id")
+        abort(400, "Missing user_id")
     if 'name' not in request.get_json():
-        abort(400, description="Missing name")
+        abort(400, "Missing name")
     data = request.get_json()
     data['city_id'] = city_id
     instance = Place(**data)
@@ -77,7 +77,7 @@ def put_place(place_id):
     if not place:
         abort(404)
     if not request.get_json():
-        abort(400, description="Not a JSON")
+        abort(400, "Not a JSON")
     data = request.get_json()
     for key, value in data.items():
         if key not in ['id', 'user_id', 'city_id', 'created_at', 'updated_at']:
@@ -92,7 +92,7 @@ def put_place(place_id):
 def search_places():
     """Retrieves the list of all Place objects"""
     if not request.get_json():
-        abort(400, description="Not a JSON")
+        abort(400, "Not a JSON")
     data = request.get_json()
     places = storage.all(Place)
     places = [

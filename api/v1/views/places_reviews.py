@@ -57,11 +57,11 @@ def post_review(place_id):
     if not place:
         abort(404)
     if not request.get_json():
-        abort(400, description="Not a JSON")
+        abort(400, "Not a JSON")
     if 'user_id' not in request.get_json():
-        abort(400, description="Missing user_id")
+        abort(400, "Missing user_id")
     if 'text' not in request.get_json():
-        abort(400, description="Missing text")
+        abort(400, "Missing text")
     data = request.get_json()
     user_id = data.get('user_id')
     user = storage.get(User, user_id)
@@ -82,7 +82,7 @@ def put_review(review_id):
     if not review:
         abort(404)
     if not request.get_json():
-        abort(400, description="Not a JSON")
+        abort(400, "Not a JSON")
     data = request.get_json()
     for key, value in data.items():
         if key not in [

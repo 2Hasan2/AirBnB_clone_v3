@@ -4,7 +4,7 @@ from models.city import City
 from models.state import State
 from models import storage
 from api.v1.views import app_views
-from flask import abort, jsonify, request
+from flask import abort, jsonify, make_response, request
 
 
 @app_views.route(
@@ -15,12 +15,7 @@ def cities(state_id):
     state = storage.get(State, state_id)
     if not state:
         abort(404)
-    cities = storage.all(City)
-    cities = [
-        city.to_dict() for city in cities.values()
-        if city.state_id == state_id
-    ]
-    return jsonify(cities)
+    return jsonify([city.to_dict() for city in state.cities])
 
 
 @app_views.route(
@@ -42,7 +37,7 @@ def delete_city(city_id):
     city = storage.get(City, city_id)
     if not city:
         abort(404)
-    storage.delete(city)
+    city.delete()
     storage.save()
     return jsonify({}), 200
 
@@ -57,13 +52,15 @@ def post_city(state_id):
     if not storage.get(State, state_id):
         abort(404)
     if not data:
-        abort(400, description="Not a JSON")
+        abort(400, "Not a JSON")
     if 'name' not in data:
-        abort(400, description="Missing name")
+        abort(400, "Missing name")
 
     instance = City(**data)
+    setattr(instance, 'state_id', state_id)
+    storage.new(instance)
     instance.save()
-    return jsonify(instance.to_dict()), 201
+    return make_response(jsonify(instance.to_dict()), 201)
 
 
 @app_views.route(
@@ -78,10 +75,10 @@ def put_city(city_id):
         abort(404)
 
     if not data:
-        abort(400, description="Not a JSON")
+        abort(400, "Not a JSON")
 
     for key, value in data.items():
         if key not in ['id', 'created_at', 'updated_at']:
             setattr(city, key, value)
-    city.save()
+    storage.save()
     return jsonify(city.to_dict()), 200
