@@ -46,50 +46,25 @@ def del_state(state_id):
     abort(404)
 
 
-@app_views.route('/states', methods=['POST'], strict_slashes=False)
-def create_state(state_id):
+@app_views.route('/states/', methods=['POST'], strict_slashes=False)
+def create_state():
     """Returs JSON representation of state with given ID"""
-    # if request.get_json:
-    #     kwargs = request.get_json()
-    # else:
-    #     return "Not a JSON", 400
-    #
-    # if kwargs:
-    #     if 'name' not in kwargs.keys():
-    #         return 'Missing name', 400
-    #
-    # try:
-    #     state = State(**kwargs)
-    #     state.save()
-    # except TypeError:
-    #     return "Not a JSON", 400
-    #
-    # return make_response(jsonify(state.to_dict()), 201)
+    if request.get_json:
+        kwargs = request.get_json()
+    else:
+        return "Not a JSON", 400
 
-    # if not state_id:
-    #     abort(404)
-    # else:
-    #     try:
-    #         kwargs = request.get_json()
-    #         if (name not in kwargs.keys()):
-    #             return(make_response("Missing name"), 400)
-    #         else:
-    #             new_state = State(**kwargs)
-    #             new_state.save()
-    #             return (make_response(jsonify(new_state.to_dict()), 201))
-    #     except ValueError:
-    #         abort(404)
-    """Create a new state"""
-    if not request.get_json():
-        abort(400, description="Not a JSON")
+    if kwargs:
+        if 'name' not in kwargs.keys():
+            return 'Missing name', 400
 
-    if 'name' not in request.get_json():
-        abort(400, description="Missing name")
+    try:
+        state = State(**kwargs)
+        state.save()
+    except TypeError:
+        return "Not a JSON", 400
 
-    data = request.get_json()
-    instance = State(**data)
-    instance.save()
-    return jsonify(instance.to_dict()), 201
+    return make_response(jsonify(state.to_dict()), 201)
 
 
 if __name__ == '__main__':
