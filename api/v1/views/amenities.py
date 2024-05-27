@@ -32,9 +32,9 @@ def delete_amenity(amenity_id):
     amenity = storage.get(Amenity, amenity_id)
     if not amenity:
         abort(404)
-    amenity.delete()
+    storage.delete(amenity)
     storage.save()
-    return jsonify({})
+    return jsonify({}), 200
 
 
 @app_views.route(
@@ -49,7 +49,7 @@ def post_amenity():
     data = request.get_json()
     instance = Amenity(**data)
     instance.save()
-    return jsonify(instance.to_dict())
+    return jsonify(instance.to_dict()), 201
 
 
 @app_views.route(
@@ -67,4 +67,4 @@ def put_amenity(amenity_id):
         if key not in ['id', 'created_at', 'updated_at']:
             setattr(amenity, key, value)
     amenity.save()
-    return jsonify(amenity.to_dict())
+    return jsonify(amenity.to_dict()), 200
