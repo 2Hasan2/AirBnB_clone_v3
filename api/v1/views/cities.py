@@ -53,6 +53,8 @@ def create_city(state_id):
 
     try:
         kwargs = request.get_json()
+        kwargs['state_id'] = state_id
+
         if not kwargs.get('name'):
             return 'Missing name', 400
 
@@ -71,6 +73,7 @@ def edit_city(city_id):
     try:
         kwargs = request.get_json()
         city_old = storage.get(City, city_id)
+        return jsonify(city_old.to_dict())
 
         for key, value in kwargs.items():
             if key not in list_keys:
