@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" Users API """
+""" this contains the views for users """
 from api.v1.views import app_views
 from flask import jsonify, abort, request
 from models import storage
@@ -54,6 +54,7 @@ def post_user():
     if 'password' not in data:
         abort(400, "Missing password")
     instance = User(**data)
+    storage.new(instance)
     instance.save()
     return jsonify(instance.to_dict()), 201
 
