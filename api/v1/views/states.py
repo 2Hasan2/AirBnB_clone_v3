@@ -41,7 +41,7 @@ def del_state(state_id):
         state_delete = storage.get(State, state_id)
         storage.delete(state_delete)
         storage.save()
-        return (jsonify({}))
+        return jsonify({}), 200
 
 
 @app_views.route('/states/', methods=['POST'], strict_slashes=False)

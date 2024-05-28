@@ -44,7 +44,7 @@ def del_place(place_id):
         place_delete = storage.get(Place, place_id)
         storage.delete(place_delete)
         storage.save()
-        return (jsonify({}))
+        return jsonify({}), 200
 
 
 @app_views.route('/cities/<string:city_id>/places', methods=['POST'], strict_slashes=False)

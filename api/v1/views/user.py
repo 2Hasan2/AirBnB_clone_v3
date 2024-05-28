@@ -41,7 +41,7 @@ def del_user(user_id):
         user_delete = storage.get(User, user_id)
         storage.delete(user_delete)
         storage.save()
-        return (jsonify({}))
+        return jsonify({}), 200
 
 
 @app_views.route('/users/', methods=['POST'], strict_slashes=False)
