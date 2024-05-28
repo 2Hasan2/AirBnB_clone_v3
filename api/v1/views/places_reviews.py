@@ -69,6 +69,7 @@ def post_review(place_id):
         abort(404)
     data['place_id'] = place_id
     instance = Review(**data)
+    storage.new(instance)
     instance.save()
     return jsonify(instance.to_dict()), 201
 

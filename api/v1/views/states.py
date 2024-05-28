@@ -49,6 +49,7 @@ def post_state():
 
     data = request.get_json()
     instance = State(**data)
+    storage.new(instance)
     instance.save()
     return jsonify(instance.to_dict()), 201
 
