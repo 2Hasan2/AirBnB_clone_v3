@@ -57,7 +57,7 @@ def create_user():
 
         user = User(**kwargs)
         user.save()
-        return make_response(jsonify(user.to_dict()), 201)
+        return jsonify(user.to_dict()), 201
     except TypeError:
         return "Not a JSON", 400
 
